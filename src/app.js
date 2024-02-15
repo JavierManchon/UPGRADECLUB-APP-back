@@ -6,9 +6,9 @@ import cors from 'cors';
 import authRoutes from './routes/auth.routes.js';
 import commentRoutes from './routes/comment.routes.js';
 import bipRoutes from './routes/bip.routes.js';
+import { configCloudinary } from './utils/config.js';
 
 const app = express();
-
 app.use(cors({
     origin:'http://localhost:4200',
     credentials: true

@@ -7,7 +7,6 @@ export const getBips = async (req, res) => {
         user: req.user.id
     }).populate('comments');
     res.json(bips);
-    console.log(res.json(bips));
 };
 
 //Esta funcion simplifica la anterior para darme todos los usuarios
@@ -24,16 +23,19 @@ export const getAllBips = async (req, res) => {
 };
 
 export const createBip = async (req, res) => {
-
+    console.log(req.file);
     try {
-    const bipPicture = req.file ? req.file_url : null;
-    const {content, category} = req.body; // obtengo los datos a traves del body
+    const bipPicture = req.file ? req.file.path : null;
+    const {content, categories} = req.body; // obtengo los datos a traves del body
 
     console.log(req.user);
 
+    // Convierto la cadena de categorías en un array, ya que para pasarla por el form data me oblica a que sea un string
+    //const categoriesArray = categories.split(',');
+
     const newBip = new Bip({
         content,
-        category,
+        categories,
         picture: bipPicture,
         //Este dato se recupera del jwt.verify en Validate Token
         user: req.user.id

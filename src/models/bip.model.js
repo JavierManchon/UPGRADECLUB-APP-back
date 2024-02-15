@@ -5,10 +5,10 @@ const bipSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    category: {
+    categories: [{
         type: String,
         default: 'General'
-    },
+    }],
     likes: {
         type: Number,
         default: 0
