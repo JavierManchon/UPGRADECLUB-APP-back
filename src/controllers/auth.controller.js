@@ -42,7 +42,21 @@ export const register = async (req,res) => {
     }
 };
 
+export const getUserById = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+        return res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 export const getUserByToken = async (req, res, next) => {
+    console.log(req.headers.authorization);
     try {
         const token = req.headers.authorization;
         if (!token) {
@@ -65,6 +79,25 @@ export const getUserByToken = async (req, res, next) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const patchUser = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { username } = req.body;
+        let picture = req.file ? req.file.path : null;
+        const userToUpdate = {
+            username
+        }
+        if (picture) {
+            userToUpdate.picture = picture
+        }
+        const updatedUser = await User.findByIdAndUpdate(id, userToUpdate, { new: true });
+        
+        return res.status(200).json(updatedUser);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 
 
 export const login = async (req, res, next) => {
