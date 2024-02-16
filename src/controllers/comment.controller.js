@@ -12,12 +12,14 @@ export const getComments = async (req, res) => {
 export const createComment = async (req, res) => {
     try {
       const { content, date } = req.body;
-      const bipId = req.params.id; 
+      const bipId = req.params.id;
+      const userId = req.params.user 
   
       const newComment = new Comment({
         content,
         date,
         bip: bipId,
+        user: userId
       });
   
       const savedComment = await newComment.save();

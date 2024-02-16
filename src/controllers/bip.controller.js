@@ -9,8 +9,10 @@ export const getBips = async (req, res) => {
     res.json(bips);
 };
 
-//Esta funcion simplifica la anterior para darme todos los usuarios
+//Esta funcion simplifica la anterior para darme todos los bips
 export const getAllBips = async (req, res) => {
+  const allBips = await Bip.find().populate('comments');
+  console.log(allBips);
   try {
       const allBips = await Bip.find().populate('comments');
       res.json(allBips);

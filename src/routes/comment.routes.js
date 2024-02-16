@@ -8,7 +8,7 @@ const router = Router();
 
 router.get('/comments/all/:id', authRequired, getComments);
 router.get('/comments/:id', authRequired, getComment);
-router.post('/comments/:id', authRequired, validateSchema(createCommentSchema), createComment);
+router.post('/create-comment/:id/:user', authRequired, validateSchema(createCommentSchema), createComment);
 router.delete('/comments/:id', authRequired, deleteComment);
 
 export default router;

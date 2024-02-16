@@ -17,12 +17,12 @@ export const register = async (req,res) => {
         //REVISAR: Para imagen de usuario
         const userPicture = req.file ? req.file_url : null;
 
-        const passwordHash = await bcrypt.hash(password, 10);
+        //const passwordHash = await bcrypt.hash(password, 10);
 
         const newUser = new User({
             username,
             email,
-            password: passwordHash,
+            password,
             picture: userPicture,
         });
     
@@ -101,7 +101,6 @@ export const patchUser = async (req, res, next) => {
 
 
 export const login = async (req, res, next) => {
-
     try {
         // Comprobamos que existe el email para logarse
         const user = await User.findOne({ email: req.body.email });
@@ -117,7 +116,7 @@ export const login = async (req, res, next) => {
             return res.status(401).json({msg: error.message})
         }      
     } catch (error) {
-        return res.status(401).json({msg: error.message})
+        return res.status(404).json({msg: error.message})
     }
 };
 

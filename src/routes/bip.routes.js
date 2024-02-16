@@ -8,7 +8,7 @@ import { upload } from '../middlewares/cloudinary.middleware.js';
 
 const router = express.Router();
 
-router.get('/all-bips', authRequired, getAllBips);
+router.get('/all-bips', getAllBips);
 router.get('/bips', authRequired, getBips);
 router.post('/create-bip', authRequired, upload.single('picture'), validateSchema(createBipSchema), createBip);
 router.get('/bips/:id', authRequired, getBip);
