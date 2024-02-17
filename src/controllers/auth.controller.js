@@ -5,10 +5,21 @@ import jwt from 'jsonwebtoken';
 import { TOKEN_SECRET } from '../config.js';
 
 export const register = async (req,res) => {
-    const { email, password, username} = req.body;
 
     try {
+        const regexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,12}$/;
 
+        const { email, password, username} = req.body;
+
+        if(username === ""|| email === "" || password === ""){
+            return res.status(401).json({message: '¡No puedes dejar campos vacios!'})
+        }
+        if(password.length < 8){
+            return res.status(401).json({message: '¡La contraseña es demasiado corta!'})
+        }
+        if(!regexp.test(password)){
+            return res.status(401).json({message: '¡El password no cumple con los requisitos minimos de seguridad!. Recuerda que debe tener de 8 a 12 caracteres y que debe incluir minimo: Un caracter en mayúscula, uno en minúscula, un número y un carácter especial'})
+        }
         //Estas dos lineas se ponen para asegurar la validacion desde el front
         const userFound = await User.findOne({email});
         console.log(userFound);
@@ -38,7 +49,8 @@ export const register = async (req,res) => {
             updatedAt: userSaved.updatedAt
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        const err = new Error("Ha ocurrido un error, revisa si tu contraseña tiene 8-12 caracteres, mayusculas, minuscular y caracteres expeciales.");
+        return res.status(404).json({message: err.message})
     }
 };
 
@@ -104,6 +116,10 @@ export const login = async (req, res, next) => {
     try {
         // Comprobamos que existe el email para logarse
         const user = await User.findOne({ email: req.body.email });
+        if(!user){
+            const error = new Error("El usuario no está registrado");
+            return res.status(401).json({msg: error.message})
+        }
 
         if (await user.passwordCheck(req.body.password)) {
                  // Generamos el Token
