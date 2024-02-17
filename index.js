@@ -1,7 +1,7 @@
 import { configDotenv } from 'dotenv';
-import app from './app.js';
-import { connectDB } from './db.js';
-import { configCloudinary } from './utils/config.js';
+import app from './src/app.js';
+import { connectDB } from './src/db.js';
+import { configCloudinary } from './src/utils/config.js';
 
 configDotenv();
 connectDB();
