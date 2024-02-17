@@ -9,10 +9,10 @@ const bipSchema = new mongoose.Schema({
         type: String,
         default: 'General'
     }],
-    likes: {
-        type: Number,
-        default: 0
-    },
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     picture:{
         type: String
     },

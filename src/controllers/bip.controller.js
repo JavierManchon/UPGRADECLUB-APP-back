@@ -127,31 +127,17 @@ export const getBip = async (req, res) => {
   
 
 
-export const updateBip = async (req, res) => {
+  export const patchLikes = async (req, res, next) => {
     try {
-      const bipId = req.params.id; 
-      const updateData = req.body; // Necesito obtener los datos actualizados a traves del body
-  
-      // Actualizar el bip por su Id
-      const updatedBip = await Bip.findByIdAndUpdate(bipId, updateData, { new: true });
-  
-      if (!updatedBip) {
-        return res.status(404).json({
-          success: false,
-          message: 'Bip not found',
-        });
-      }
-  
-      res.status(200).json({
-        success: true,
-        message: 'Bip updated successfully',
-        bip: updatedBip,
-      });
+        const { id } = req.params;
+        const { likes } = req.body;
+        const bipToUpdate = {
+            likes
+        }
+        const updatedBip = await Bip.findByIdAndUpdate(id, bipToUpdate, { new: true });
+        
+        return res.status(200).json(updatedBip);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        success: false,
-        message: 'Internal server error',
-      });
+        res.status(500).json({ message: error.message });
     }
-  };
+}
