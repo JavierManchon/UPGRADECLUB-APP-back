@@ -10,7 +10,7 @@ import { configCloudinary } from './utils/config.js';
 
 const app = express();
 app.use(cors({
-    origin:'http://localhost:4200',
+    origin:'*',
     credentials: true
 }));
 app.use(morgan('dev'));
